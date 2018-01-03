@@ -1,4 +1,4 @@
-package com.arkansascodingacademy;
+package com.example;
 
 public class Main
 {

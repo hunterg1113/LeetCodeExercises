@@ -1,4 +1,4 @@
-package com.arkansascodingacademy;
+package com.example;
 
 //The function should return the number of arithmetic subsequence slices in an array.
 
