@@ -2,10 +2,8 @@ package com.example;
 
 public class Main
 {
-    public static void main(String[] args)
-    {
-        Subsequence subsequence = new Subsequence(new int[]{2, 4, 6, 8, 10, 12, 14, 16, 18, 20});
-        subsequence.findArithmeticSubsequences();
-        subsequence.printSubsequences();
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.print(solution.threeSum(new int[]{3,0,-2,-1,1,2}));
     }
 }
