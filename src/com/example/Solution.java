@@ -4,6 +4,100 @@ import java.util.*;
 
 class Solution
 {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode l1 = new ListNode(0);
+        ListNode res = l1;
+        l1.next = head;
+
+        for (int i = 0; i < n - 1; i++) head = head.next;
+
+        while (head.next != null) {
+            head = head.next;
+            l1 = l1.next;
+        }
+
+        if (l1.next.next != null) l1.next = l1.next.next;
+        else l1.next = null;
+
+        return res.next;
+    }
+
+
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        char[] array = s.toCharArray();
+
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == '(' || array[i] == '[' || array[i] == '{') {
+                stack.push(array[i]);
+            }
+            else if (array[i] == ')' && !stack.empty() && stack.peek() == '(') {
+                stack.pop();
+            }
+            else if (array[i] == '}' && !stack.empty() && stack.peek() == '{') {
+                stack.pop();
+            }
+            else if (array[i] == ']' && !stack.empty() && stack.peek() == '[') {
+                stack.pop();
+            }
+            else {
+                return false;
+            }
+        }
+        return stack.empty();
+    }
+
+
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int result = nums[0] + nums[1] + nums[nums.length - 1];
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            int lo = i + 1, hi = nums.length - 1;
+
+            while (lo < hi) {
+                int sum = nums[i] + nums[lo] + nums[hi];
+                if (Math.abs(target - result) > Math.abs(target - sum)) {
+                    result = sum;
+                }
+                if (target > sum) {
+                    lo++;
+                }
+                else {
+                    hi--;
+                }
+            }
+        }
+        return result;
+    }
+
+
+    private static final String[] LETTERS = new String[]{"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+    public List<String> letterCombinations(String digits) {
+        List<String> list = new ArrayList<>();
+        recFnc(0, list, digits, "");
+        return list;
+    }
+
+    private void recFnc(int index, List<String> list, String digits, String s) {
+        if (index < digits.length() - 1) {
+            char[] array = LETTERS[digits.charAt(index) - '0'].toCharArray();
+
+            for (char letter : array) {
+                recFnc(index + 1, list, digits, s + letter);
+            }
+        }
+        if (index == digits.length() - 1) {
+            char[] array = LETTERS[digits.charAt(index) - '0'].toCharArray();
+
+            for (char letter : array) {
+                list.add(s + letter);
+            }
+        }
+    }
+
+
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
 
