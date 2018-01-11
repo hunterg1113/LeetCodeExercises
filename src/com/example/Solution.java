@@ -4,6 +4,95 @@ import java.util.*;
 
 class Solution
 {
+    public List<String> parenthesesGen(int n) {
+        List<String> list = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+
+        recFnc(0, 0, list, n, sb);
+
+        return list;
+    }
+
+    private void recFnc(int left, int right, List<String> list, int n, StringBuilder sb) {
+        if (left == n && right == n) {
+            list.add(sb.toString());
+            System.out.println(sb.toString());
+            return;
+        }
+        if (left < n) {
+            sb.append("(");
+            recFnc(left + 1, right, list, n, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        if (right < left) {
+            sb.append(")");
+            recFnc(left, right + 1, list, n, sb);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+
+    public int divide(int dividend, int divisor) {
+
+        int res = 0;
+        if (divisor == 0) return 0;
+        if (dividend > 0 && divisor > 0 || dividend < 0 && divisor < 0) {
+            while (dividend >= divisor) {
+                dividend -= divisor;
+                res++;
+            }
+        }
+
+        System.out.println(res);
+        return res;
+    }
+
+    public int strStr(String haystack, String needle) {
+        if (!haystack.contains(needle)) return -1;
+
+        int n = needle.length();
+
+        for (int i = 0; i < haystack.length() - n + 1; i++) {
+            if (haystack.substring(i, i + n).equals(needle)) {
+                System.out.println(i + " " + needle);
+                return i;
+            }
+        }
+        return 0;
+    }
+
+
+    public int removeDuplicates(int[] nums) {
+        int i = 1;
+
+        for (int j = 1; j < nums.length; j++) {
+            if (nums[j] == nums[j - 1]) continue;
+            else {
+                nums[i] = nums[j];
+                i++;
+            }
+        }
+
+        return i;
+    }
+
+
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
+
+        if (l1.val < l2.val) {
+            ListNode temp = l1;
+            temp.next = mergeTwoLists(l1.next, l2);
+            return temp;
+        }
+        else {
+            ListNode temp = l2;
+            temp.next = mergeTwoLists(l1, l2.next);
+            return temp;
+        }
+    }
+
+
     public ListNode removeNthFromEnd(ListNode head, int n) {
         ListNode l1 = new ListNode(0);
         ListNode res = l1;
