@@ -4,6 +4,91 @@ import java.util.*;
 
 class Solution
 {
+    public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
+        ListNode l3 = new ListNode(0);
+        ListNode res = l3;
+        int rem = 0;
+        while (l1 != null && l2 != null) {
+            int q = l1.val + l2.val + rem;
+            int dig = q % 10;
+            rem = q / 10;
+            l3.next = new ListNode(dig);
+            l1 = l1.next;
+            l2 = l2.next;
+            l3 = l3.next;
+        }
+
+        if (l1 != null) {
+            while (rem > 0) {
+                int q = l1.val + rem;
+                l3.next = new ListNode(q % 10);
+                rem = q / 10;
+                l1 = l1.next;
+                l3 = l3.next;
+            }
+            l3.next = l1;
+        }
+
+        if (l2 != null) {
+            while (rem > 0) {
+                int q = l2.val + rem;
+                l3.next = new ListNode(q % 10);
+                rem = q / 10;
+                l2 = l2.next;
+                l3 = l3.next;
+            }
+            l3.next = l2;
+        }
+
+        return res.next;
+    }
+
+    public int removeDuplicates2(int[] nums) {
+        int j = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != nums[i - 1]) {
+                nums[j] = nums[i];
+                j++;
+            }
+        }
+        return j;
+    }
+
+
+    public int divide(int dividend, int divisor) {
+        int sign = 1;
+        if (dividend < 0 && divisor > 0 || divisor < 0 && dividend > 0) {
+            sign = -1;
+        }
+        long ldividend = Math.abs((long) dividend);
+        long ldivisor = Math.abs((long) divisor);
+
+        if (divisor == 0 || ldividend < ldivisor) return 0;
+
+        long q = recFnc(ldividend, ldivisor);
+
+        if (q > Integer.MAX_VALUE && sign == 1) {
+            return Integer.MAX_VALUE;
+        }
+
+        return (int) q * sign;
+    }
+
+    private long recFnc(long dividend, long divisor) {
+        if (dividend < divisor) return 0;
+
+        long sum = divisor;
+        long mult = 1;
+
+        while ((sum + sum) < dividend) {
+            sum += sum;
+            mult += mult;
+        }
+
+        return mult + recFnc(dividend - sum, divisor);
+    }
+
+
     public List<String> parenthesesGen(int n) {
         List<String> list = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
@@ -29,21 +114,6 @@ class Solution
             recFnc(left, right + 1, list, n, sb);
             sb.deleteCharAt(sb.length() - 1);
         }
-    }
-
-    public int divide(int dividend, int divisor) {
-
-        int res = 0;
-        if (divisor == 0) return 0;
-        if (dividend > 0 && divisor > 0 || dividend < 0 && divisor < 0) {
-            while (dividend >= divisor) {
-                dividend -= divisor;
-                res++;
-            }
-        }
-
-        System.out.println(res);
-        return res;
     }
 
     public int strStr(String haystack, String needle) {
