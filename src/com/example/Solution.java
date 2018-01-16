@@ -4,6 +4,233 @@ import java.util.*;
 
 class Solution
 {
+
+    public boolean isValidSudoku(char[][] board) {
+        for (int i = 0; i < board.length; i++) {
+            Set<Character> set = new HashSet<>();
+            for (int j = 0; j < board.length; j++) {
+                if (board[i][j] != '.' && !set.contains(board[i][j])) set.add(board[i][j]);
+                else if (board[i][j] != '.' && set.contains(board[i][j])) return false;
+            }
+        }
+        for (int i = 0; i < board.length; i++) {
+            Set<Character> set = new HashSet<>();
+            for (int j = 0; j < board.length; j++) {
+                if (board[j][i] != '.' && !set.contains(board[j][i])) set.add(board[j][i]);
+                else if (board[j][i] != '.' && set.contains(board[j][i])) return false;
+            }
+        }
+
+        int y = 0;
+
+        while (y <= 6) {
+            int x = 0;
+            while (x <= 6) {
+                Set<Character> set = new HashSet<>();
+                for (int i = x; i < x + 3; i++) {
+                    for (int j = y; j < y + 3; j++) {
+                        if (board[i][j] != '.' && !set.contains(board[i][j])) set.add(board[i][j]);
+                        else if (board[i][j] != '.' && set.contains(board[i][j])) return false;
+                    }
+                }
+                x += 3;
+            }
+            y += 3;
+        }
+
+        return true;
+    }
+
+
+    public ListNode swapPairs(ListNode head) {
+        ListNode res = new ListNode(0);
+        res.next = head;
+        ListNode temp = res;
+
+        while (temp.next != null && temp.next.next != null) {
+            ListNode l1 = temp.next;
+            ListNode l2 = temp.next.next;
+            l1.next = l2.next;
+            temp.next = l2;
+            temp.next.next = l1;
+            temp = temp.next.next;
+        }
+        return res.next;
+    }
+
+
+    public int orderOfLargestPlusSign(int N, int[][] mines) {
+        int[][] b = new int[N][N];
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                b[i][j] = 1;
+            }
+        }
+
+        for (int i = 0; i < mines.length; i++) {
+            int x = mines[i][0];
+            int y = mines[i][1];
+            b[x][y] = 0;
+        }
+
+        int s = 0;
+
+        boolean firstOne = true;
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (b[i][j] == 0) continue;
+                if (firstOne) {
+                    firstOne = false;
+                    s = 1;
+                }
+                int u = i, d = i, r = j, l = j;
+
+                while (u - 1 >= 0 && b[u - 1][j] == 1 && d + 1 < N && b[d + 1][j] == 1 && l - 1 >= 0 && b[i][l - 1] == 1 && r + 1 < N &&
+                        b[i][r + 1] == 1) {
+                    u--;
+                    d++;
+                    l--;
+                    r++;
+                }
+                if (s < r - j + 1) s = r - j + 1;
+            }
+        }
+        return s;
+    }
+
+
+    public List<Integer> partitionLabels(String S) {
+        Map<Character, List<Integer>> map = new LinkedHashMap<>();
+        List<Integer> res = new ArrayList<>();
+
+        for (int i = 0; i < S.length(); i++) {
+            map.putIfAbsent(S.charAt(i), new ArrayList<>());
+            map.get(S.charAt(i)).add(i);
+        }
+
+        int lo = 0;
+        int hi = 0;
+
+        boolean firstTime = true;
+        for (char c : map.keySet()) {
+            List<Integer> list = map.get(c);
+
+            if (list.get(0) > hi) {
+                res.add(hi - lo + 1);
+                lo = list.get(0);
+                hi = list.get(list.size() - 1);
+            }
+            if (list.get(0) < lo) lo = list.get(0);
+            if (list.get(list.size() - 1) > hi) hi = list.get(list.size() - 1);
+        }
+
+        res.add(hi - lo + 1);
+        return res;
+    }
+
+
+    public int countPrimeSetBits(int L, int R) {
+        int pCount = 0;
+
+        for (int i = L; i <= R; i++) {
+            String b = Integer.toBinaryString(i);
+
+            int count = 0;
+            for (int j = 0; j < b.length(); j++) {
+                if (b.charAt(j) == '1') count++;
+            }
+
+            for (int r = 2; r <= count; r++) {
+                if (r == count) {
+                    pCount++;
+                    break;
+                }
+                if (count % r == 0) break;
+            }
+        }
+        return pCount;
+    }
+
+
+    public int[] anagramMappings(int[] A, int[] B) {
+        int[] P = new int[A.length];
+
+        for (int i = 0; i < A.length; i++) {
+            for (int j = 0; j < B.length; j++) {
+                if (A[i] == B[j]) {
+                    P[i] = j;
+                    break;
+                }
+            }
+        }
+        return P;
+    }
+
+
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        List<List<Integer>> list = new ArrayList<>();
+
+        for (int i = 0; i <= nums.length - 4; i++) {
+            if (nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) break;
+            if (i == 0 || nums[i] != nums[i - 1]) {
+                for (int j = i + 1; j <= nums.length - 3; j++) {
+                    if (j == i + 1 || nums[j] != nums[j - 1]) {
+                        int lo = j + 1;
+                        int hi = nums.length - 1;
+                        int sum = target - nums[i] - nums[j];
+
+                        while (lo < hi) {
+                            if (nums[hi] + nums[lo] == sum) {
+                                list.add(Arrays.asList(nums[i], nums[j], nums[lo], nums[hi]));
+                                while (lo < hi && nums[lo] == nums[lo + 1]) lo++;
+                                while (lo < hi && nums[hi] == nums[hi - 1]) hi--;
+                                lo++;
+                                hi--;
+                            }
+                            else {
+                                while (lo < hi && nums[lo] + nums[hi] < sum) lo++;
+                                while (lo < hi && nums[lo] + nums[hi] > sum) hi--;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+
+    int left = 0;
+    int maxLen = 0;
+
+    public String longestPalindrome(String s) {
+        if (s.length() < 2) return s;
+
+        for (int i = 0; i < s.length(); i++) {
+            palHelper(s, i, i);
+            palHelper(s, i, i + 1);
+        }
+
+        return s.substring(left, left + maxLen);
+    }
+
+    private void palHelper(String s, int lo, int hi) {
+        while (lo >= 0 && hi <= s.length() - 1 && s.charAt(lo) == s.charAt(hi)) {
+            hi++;
+            lo--;
+        }
+        lo++;
+        hi--;
+
+        if (maxLen < hi - lo + 1) {
+            left = lo;
+            maxLen = hi - lo + 1;
+        }
+    }
+
+
     public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
         ListNode l3 = new ListNode(0);
         ListNode res = l3;
@@ -463,7 +690,7 @@ class Solution
     }
 
 
-    public String longestPalindrome(String s) {
+    public String longestPalindrome2(String s) {
         if (s.length() < 2) return s;
 
         char[] word = s.toCharArray();
