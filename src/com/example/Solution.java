@@ -4,6 +4,45 @@ import java.util.*;
 
 class Solution
 {
+    private List<List<Integer>> lists = new ArrayList<>();
+
+    public List<List<Integer>> combinationSum(int[] c, int target) {
+        Arrays.sort(c);
+        for (int i = 0; i < c.length; i++) {
+            if (c[i] == target) {
+                List<Integer> res = new ArrayList<>();
+                res.add(c[i]);
+                lists.add(res);
+                break;
+            }
+            else {
+                List<Integer> list = new LinkedList<>();
+                list.add(c[i]);
+                recFnc(i, c[i], list, c, target);
+            }
+        }
+        return lists;
+    }
+
+    private void recFnc(int index, int sum, List<Integer> list, int[] c, int target) {
+        for (int i = index; i < c.length; i++) {
+            if (sum + c[i] == target) {
+                List<Integer> res = new ArrayList<>(list);
+                res.add(c[i]);
+                lists.add(res);
+                return;
+            }
+            else if (sum + c[i] < target) {
+                List<Integer> res = new ArrayList<>(list);
+                res.add(c[i]);
+                recFnc(i, sum + c[i], res, c, target);
+            }
+            else {
+                return;
+            }
+        }
+    }
+
 
     public boolean isValidSudoku(char[][] board) {
         for (int i = 0; i < board.length; i++) {

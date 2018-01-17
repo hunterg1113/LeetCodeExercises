@@ -4,17 +4,11 @@ public class Main
 {
     public static void main(String[] args) {
         Solution solution = new Solution();
+        System.out.println(solution.combinationSum(new int[]{1, 2}, 4 ));
+    }
+}
 
-        char[][] array = new char[9][9];
-
-//        [[".",".","4",".",".",".","6","3","."],
-//        [".",".",".",".",".",".",".",".","."],
-//        ["5",".",".",".",".",".",".","9","."],
-//
-//        [".",".",".","5",".",".",".",".","."],
-//        [".",".",".",".",".",".",".",".","."],
-//        [".",".",".",".",".",".",".",".","."]]
-
+/*
         array[0][0] = '.';
         array[0][1] = '.';
         array[0][2] = '4';
@@ -44,10 +38,6 @@ public class Main
         array[2][6] = '.';
         array[2][7] = '9';
         array[2][8] = '.';
-
-//        [".",".",".","5","6",".",".",".","."],
-//        ["4",".","3",".",".",".",".",".","1"],
-//        [".",".",".","7",".",".",".",".","."],
 
         array[3][0] = '.';
         array[3][1] = '.';
@@ -108,16 +98,4 @@ public class Main
         array[8][6] = '.';
         array[8][7] = '.';
         array[8][8] = '.';
-
-        for (int i = 0; i < 9; i++) {
-            System.out.print("|");
-            for (int j = 0; j < 9; j++) {
-                if (array[i][j] == '.') System.out.print(" |");
-                else System.out.print(array[i][j] + "|");
-            }
-            System.out.println();
-        }
-
-        System.out.println(solution.isValidSudoku(array));
-    }
-}
+*/
