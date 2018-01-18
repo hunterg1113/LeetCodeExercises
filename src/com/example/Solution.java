@@ -4,6 +4,106 @@ import java.util.*;
 
 class Solution
 {
+    public int longestValidParentheses(String s) {
+        Stack<Integer> stack = new Stack<>();
+        int left = -1, max = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') stack.push(i);
+            else {
+                if (stack.empty()) left = i;
+                else {
+                    stack.pop();
+                    if (stack.empty()) max = Math.max(max, i - left);
+                    else max = Math.max(max, i - stack.peek());
+                }
+            }
+        }
+        return max;
+    }
+
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> ans = new ArrayList<>();
+        int wLen = words[0].length();
+        int len = words.length * wLen;
+
+        for (int i = 0; i <= s.length() - len; i++) {
+            List<String> list = new ArrayList<>(Arrays.asList(words));
+            if (list.contains(s.substring(i, i + wLen))) {
+                for (int l = 0; l < list.size(); l++) {
+                    if (list.get(l).equals(s.substring(i, i + wLen))) {
+                        list.remove(s.substring(i, i + wLen));
+                        break;
+                    }
+                }
+                int r = i + wLen;
+                while (r <= s.length() - wLen) {
+                    if (list.contains(s.substring(r, r + wLen))) {
+                        list.remove(s.substring(r, r + wLen));
+                        r += wLen;
+                    }
+                    else break;
+                }
+                if (words.length - list.size() == words.length) {
+                    ans.add(i);
+                }
+
+            }
+        }
+        return ans;
+    }
+
+
+//    private List<List<Integer>> lists = new ArrayList<>();
+
+    public List<List<Integer>> combinationSum2(int[] c, int target) {
+        Arrays.sort(c);
+        System.out.println(Arrays.toString(c));
+
+        int i = 0;
+        while (i < c.length) {
+            if (c[i] >= target) {
+                if (c[i] == target) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(c[i]);
+                    lists.add(list);
+                }
+                break;
+            }
+            else {
+                List<Integer> list = new ArrayList<>();
+                list.add(c[i]);
+                recFnc2(i + 1, c[i], list, c, target);
+            }
+            while (i < c.length - 1 && c[i] == c[i + 1]) i++;
+            i++;
+        }
+
+        return lists;
+    }
+
+    private void recFnc2(int index, int sum, List<Integer> list, int[] c, int target) {
+        int i = index;
+        while (i < c.length) {
+            if (sum + c[i] == target) {
+                List<Integer> res = new ArrayList<>(list);
+                res.add(c[i]);
+                lists.add(res);
+                return;
+            }
+            else if (sum + c[i] < target) {
+                List<Integer> res = new ArrayList<>(list);
+                res.add(c[i]);
+                recFnc(i + 1, sum + c[i], res, c, target);
+            }
+            else {
+                return;
+            }
+            while (i < c.length - 1 && c[i] == c[i + 1]) i++;
+            i++;
+        }
+    }
+
     private List<List<Integer>> lists = new ArrayList<>();
 
     public List<List<Integer>> combinationSum(int[] c, int target) {
