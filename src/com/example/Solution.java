@@ -4,6 +4,64 @@ import java.util.*;
 
 class Solution
 {
+    public String multiply(String num1, String num2) {
+        int[] res = new int[num1.length() + num2.length()];
+
+        for (int i = num1.length() - 1; i >= 0; i--) {
+            int rem = 0;
+            for (int j = num2.length() - 1; j >= 0; j--) {
+                int x = num1.charAt(i) - '0';
+                int y = num2.charAt(j) - '0';
+                int sum = x * y + rem;
+                int r = sum % 10;
+                int s = sum / 10;
+                res[i + j + 1] += r;
+                rem = s;
+                if (j == 0 && rem > 0) res[i + j] += rem;
+            }
+        }
+
+        int rem = 0;
+        for (int i = res.length - 1; i >= 0; i--) {
+            res[i] += rem;
+            if (i != 0) {
+                rem = res[i] / 10;
+                res[i] %= 10;
+            }
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 0; i < res.length; i++) {
+            stringBuilder.append(res[i]);
+        }
+
+        while (stringBuilder.charAt(0) == '0' && stringBuilder.length() > 1) {
+            stringBuilder.deleteCharAt(0);
+        }
+
+        return stringBuilder.toString();
+    }
+
+//    private int count = 0;
+
+    public int countSubstrings(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            palHelper(i, i, s);
+            palHelper(i, i + 1, s);
+        }
+        return count;
+    }
+
+    private void palHelper(int lo, int hi, String s) {
+        while (lo >= 0 && hi < s.length() && s.charAt(lo) == s.charAt(hi)) {
+            lo--;
+            hi++;
+            count++;
+        }
+    }
+
+
     public int longestValidParentheses(String s) {
         Stack<Integer> stack = new Stack<>();
         int left = -1, max = 0;
